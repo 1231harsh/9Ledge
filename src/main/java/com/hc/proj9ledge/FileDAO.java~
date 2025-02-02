@@ -1,0 +1,60 @@
+package com.hc.proj9ledge;
+
+public class FileDAO {
+    private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
+    public static void addFile(File file) {
+        // Open a new session
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            // Save the file object
+            session.save(file);
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<File> searchFiles(String searchTerm) {
+        List<File> files = new ArrayList<>();
+
+        // Open a new session
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM File WHERE fileName LIKE :searchTerm";
+
+            // Create a query
+            Query<File> query = session.createQuery(hql, File.class);
+            query.setParameter("searchTerm", "%" + searchTerm + "%");
+
+            // Execute the query and get the result list
+            files = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return files;
+    }
+
+    public static List<File> getFilesByFolderId(int folderId) {
+        List<File> files = new ArrayList<>();
+
+        // Open a new session
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM File WHERE folderId = :folderId";
+
+            // Create a query
+            Query<File> query = session.createQuery(hql, File.class);
+            query.setParameter("folderId", folderId);
+
+            // Execute the query and get the result list
+            files = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return files;
+    }
+
+}

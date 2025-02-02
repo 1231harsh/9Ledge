@@ -1,0 +1,84 @@
+package com.hc.proj9ledge;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class NoteDAO {
+    private Connection connection;
+
+    public NoteDAO() {
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/knowledge", "root", "1231harsh");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Fetch all notes from the database
+    public List<String> getAllNoteTitles() {
+        List<String> notes = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT title FROM notes");
+            while (resultSet.next()) {
+                notes.add(resultSet.getString("title"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return notes;
+    }
+
+    // Search for notes by title
+    public List<String> searchNotes(String query) {
+        List<String> notes = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT title FROM notes WHERE title LIKE ?");
+            statement.setString(1, "%" + query + "%");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                notes.add(resultSet.getString("title"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return notes;
+    }
+
+    public Note getNoteByTitle(String title) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM notes WHERE title = ?");
+            statement.setString(1, title);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Note(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getString("file_path")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    // Insert a new note into the database
+    public void insertNote(Note note) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO notes (title, content, file_path) VALUES (?, ?, ?)"
+            );
+            statement.setString(1, note.getTitle());
+            statement.setString(2, note.getContent());
+            statement.setString(3, note.getFilePath());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,45 @@
+/* macOS-inspired grayscale theme */
+
+/* Toolbar Styling */
+.toolbar {
+    -fx-background-color: #d6d6d6;
+    -fx-padding: 5px;
+    -fx-border-color: #b0b0b0;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+    -fx-border-color: #b0b0b0;
+    -fx-border-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #cfcfcf;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #b0b0b0;
+    -fx-border-width: 0px 1px 0px 0px;
+    -fx-padding: 10px;
+}
+
+/* Main Content Styling */
+.content-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 2px;
+}
+
+/* Search Field Styling */
+.search-field {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #b0b0b0;
+    -fx-padding: 5px;
+    -fx-border-radius: 5px;
+}
